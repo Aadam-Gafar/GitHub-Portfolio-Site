@@ -99,7 +99,7 @@ section { padding:2rem 0; border-top:1px solid var(--bd); animation:fadeUp .6s e
 .accent-link { color:var(--ac); text-decoration:none }
 
 /* ── contact ── */
-.contact-form  { display:flex; flex-direction:column; gap:1rem; max-width:560px }
+.contact-form  { display:flex; flex-direction:column; gap:1rem;}
 .field-row     { display:grid; grid-template-columns:1fr 1fr; gap:1rem }
 .field-group   { display:flex; flex-direction:column; gap:.4rem }
 .field-group label { font-size:11px; letter-spacing:.08em; color:var(--ac); text-transform:uppercase }
