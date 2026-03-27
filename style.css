@@ -30,8 +30,11 @@ body::before {
 .wrap    { max-width:860px; margin:0 auto; padding:0 2rem }
 .prose   { font-family:var(--sans); font-weight:300; font-size:13px; color:var(--muted); line-height:1.65 }
 .panel   { background:var(--bg2); border:1px solid var(--bd); border-radius:4px; padding:1.25rem 1.5rem }
-a:hover  { color:var(--ac) }
-h2,h3    { font-size:inherit; font-weight:inherit; color:inherit }
+a               { color: var(--text); text-decoration: none; }
+a:visited       { color: var(--text); }
+a:hover         { color: var(--ac); }
+.card-link:visited   { color: var(--muted); }
+.accent-link:visited { color: var(--ac); }
 h2,h3    { font-size:inherit; font-weight:inherit; color:inherit }
 
 /* ── header ── */
@@ -73,7 +76,7 @@ section { padding:2rem 0; border-top:1px solid var(--bd); animation:fadeUp .6s e
 .card:hover              { border-color:#3a3a3a; transform:translateY(-2px) }
 .card:hover::before      { opacity:1 }
 .card-header             { display:flex; flex-direction:column; gap:.4rem; margin-bottom:.75rem }
-.card-title              { font-size:15px; font-weight:500; color:var(--bright); text-decoration:none; transition:color .2s }
+.card-title              { font-size:15px; font-weight:500; color:var(--text); text-decoration:none; transition:color .2s }
 .card-links              { display:flex; gap:.5rem; flex-wrap:wrap }
 .card-link               { font-size:11px; color:var(--muted); text-decoration:none; border:1px solid var(--bd); padding:3px 8px; border-radius:2px; white-space:nowrap; transition:border-color .2s,color .2s }
 .card-link:hover         { border-color:var(--ac) }
@@ -89,7 +92,7 @@ section { padding:2rem 0; border-top:1px solid var(--bd); animation:fadeUp .6s e
 .timeline-item:last-child { padding-bottom:0 }
 .timeline-item::before  { content:''; position:absolute; left:-3px; top:1.85rem; width:5px; height:5px; border-radius:50%; background:var(--ac) }
 .timeline-header        { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; flex-wrap:wrap; margin-bottom:.75rem }
-.timeline-role          { font-size:14px; font-weight:500; color:var(--bright) }
+.timeline-role          { font-size:14px; font-weight:500; color:var(--text) }
 .timeline-meta          { font-size:11px; color:var(--muted); white-space:nowrap }
 .timeline-list          { list-style:none; display:flex; flex-direction:column; gap:.4rem }
 .timeline-list li       { padding-left:1rem; position:relative }
