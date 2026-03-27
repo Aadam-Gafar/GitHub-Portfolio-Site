@@ -99,7 +99,12 @@ section { padding:2rem 0; border-top:1px solid var(--bd); animation:fadeUp .6s e
 .timeline-list li::before { content:'—'; position:absolute; left:0; color:var(--bd) }
 
 /* ── skills ── */
-.skills-grid  { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:1.5rem }
+
+.skills-grid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr)); 
+  gap: 1.5rem; 
+}
 .skill-label  { font-size:11px; letter-spacing:.08em; color:var(--ac); text-transform:uppercase; margin-bottom:.6rem }
 
 /* ── about ── */
