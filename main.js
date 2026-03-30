@@ -80,7 +80,24 @@ function initContact() {
     });
 }
 
+// ── theme toggle ──────────────────────────────────────────────────────────────
+
+function initTheme() {
+    const btn = document.getElementById('theme-toggle');
+    const stored = localStorage.getItem('theme');
+
+    if (stored === 'light') {
+        document.body.classList.add('light');
+    }
+
+    btn.addEventListener('click', () => {
+        const isLight = document.body.classList.toggle('light');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    });
+}
+
 // ── init ──────────────────────────────────────────────────────────────────────
 
 initProjects();
 initContact();
+initTheme();
