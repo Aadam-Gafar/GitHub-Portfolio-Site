@@ -68,8 +68,9 @@ section { padding:2rem 0; border-top:1px solid var(--bd); animation:fadeUp .6s e
 
 /* ── carousel ── */
 .carousel { position:relative; overflow:hidden }
-.carousel-track { display:flex; transition:transform .35s cubic-bezier(.4,0,.2,1); will-change:transform }
-.carousel-slide { flex:0 0 100%; min-width:0 }
+.carousel-track { display:flex; gap:1.5rem; transition:transform .35s cubic-bezier(.4,0,.2,1); will-change:transform }
+.carousel-track.no-transition { transition:none }
+.carousel-slide { flex:0 0 calc(100% - 6rem); min-width:0 }
 .carousel-slide .card { margin:0 }
 
 .carousel-controls { display:flex; align-items:center; justify-content:center; gap:1rem; margin-top:1.25rem }

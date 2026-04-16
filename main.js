@@ -72,32 +72,86 @@ async function initProjects() {
 
 function initCarousel(track) {
     const total = REPOS.length;
-    let cur = 0;
 
-    const dotsEl = document.getElementById('carousel-dots');
+    // Clone first and last slides to enable seamless infinite looping.
+    // Track layout: [last_clone, slide_0, slide_1, …, slide_N, first_clone]
+    // Virtual indices:    0          1       2    …    N        N+1
+    track.appendChild(track.children[0].cloneNode(true));
+    track.insertBefore(track.children[track.children.length - 2].cloneNode(true), track.children[0]);
+
+    let vCur = 1; // virtual index into the cloned track
+    let cur  = 0; // logical index (what the dots reflect)
+
+    const dotsEl  = document.getElementById('carousel-dots');
     const prevBtn = document.getElementById('carousel-prev');
     const nextBtn = document.getElementById('carousel-next');
+
+    prevBtn.disabled = false;
+    nextBtn.disabled = false;
 
     dotsEl.innerHTML = Array.from({ length: total }, (_, i) =>
         `<button class="carousel-dot" aria-label="Go to project ${i + 1}"></button>`
     ).join('');
     const dots = [...dotsEl.querySelectorAll('.carousel-dot')];
 
-    function go(idx) {
-        cur = Math.max(0, Math.min(total - 1, idx));
-        track.style.transform = `translateX(-${cur * 100}%)`;
-        dots.forEach((d, i) => d.classList.toggle('active', i === cur));
-        prevBtn.disabled = cur === 0;
-        nextBtn.disabled = cur === total - 1;
+    function getTranslate(vIdx) {
+        const containerWidth = track.parentElement.offsetWidth;
+        const slideWidth     = track.children[0].offsetWidth;
+        const gap = parseFloat(getComputedStyle(track).columnGap) || 24;
+        const offset = (containerWidth - slideWidth) / 2; // centres the active slide
+        return offset - vIdx * (slideWidth + gap);
     }
 
-    prevBtn.addEventListener('click', () => go(cur - 1));
-    nextBtn.addEventListener('click', () => go(cur + 1));
-    dots.forEach((d, i) => d.addEventListener('click', () => go(i)));
+    function updateDots() {
+        dots.forEach((d, i) => d.classList.toggle('active', i === cur));
+    }
+
+    // Instant jump (no animation) — used for the clone→real teleport
+    function jumpTo(vIdx) {
+        track.classList.add('no-transition');
+        track.style.transform = `translateX(${getTranslate(vIdx)}px)`;
+        track.getBoundingClientRect(); // force reflow so the class takes effect
+        track.classList.remove('no-transition');
+        vCur = vIdx;
+    }
+
+    // Animated slide
+    function slideTo(vIdx) {
+        track.style.transform = `translateX(${getTranslate(vIdx)}px)`;
+        vCur = vIdx;
+    }
+
+    function next() {
+        const newV = vCur + 1;
+        cur = newV > total ? 0 : cur + 1;
+        slideTo(newV);
+        updateDots();
+    }
+
+    function prev() {
+        const newV = vCur - 1;
+        cur = newV < 1 ? total - 1 : cur - 1;
+        slideTo(newV);
+        updateDots();
+    }
+
+    // After animating into a clone, silently teleport to the real counterpart
+    track.addEventListener('transitionend', () => {
+        if (vCur === 0)         jumpTo(total);
+        else if (vCur === total + 1) jumpTo(1);
+    });
+
+    prevBtn.addEventListener('click', prev);
+    nextBtn.addEventListener('click', next);
+    dots.forEach((d, i) => d.addEventListener('click', () => {
+        cur = i; vCur = i + 1;
+        slideTo(vCur);
+        updateDots();
+    }));
 
     document.addEventListener('keydown', e => {
-        if (e.key === 'ArrowLeft') go(cur - 1);
-        if (e.key === 'ArrowRight') go(cur + 1);
+        if (e.key === 'ArrowLeft')  prev();
+        if (e.key === 'ArrowRight') next();
     });
 
     let touchStartX = null;
@@ -105,11 +159,14 @@ function initCarousel(track) {
     track.addEventListener('touchend', e => {
         if (touchStartX === null) return;
         const dx = e.changedTouches[0].clientX - touchStartX;
-        if (Math.abs(dx) > 40) go(cur + (dx < 0 ? 1 : -1));
+        if (Math.abs(dx) > 40) dx < 0 ? next() : prev();
         touchStartX = null;
     }, { passive: true });
 
-    go(0);
+    window.addEventListener('resize', () => jumpTo(vCur));
+
+    jumpTo(1); // initial position — no animation, correct centering
+    updateDots();
 }
 
 // ── contact form ──────────────────────────────────────────────────────────────
