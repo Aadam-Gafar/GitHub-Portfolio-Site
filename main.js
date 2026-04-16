@@ -46,7 +46,7 @@ function buildCard(p, d) {
     const dot = lang && LANG_COLORS[lang] ? `<span class="lang-dot" style="background:${LANG_COLORS[lang]}"></span>` : '';
     const allLinks = [...(p.links || []), { label: 'github ↗', url: d?.html_url }];
 
-    return `<div class="carousel-slide"><div class="card">
+    return `<div class="card">
     <div class="card-header">
       ${link('card-title', d?.html_url, d?.name || p.repo.split('/')[1])}
       <div class="card-links">${allLinks.map(l => link('card-link', l.url, l.label)).join('')}</div>
@@ -57,116 +57,16 @@ function buildCard(p, d) {
       <span class="meta-item">${ICONS.fork} ${d ? fmt(d.forks_count) : '—'}</span>
       ${lang ? `<span class="meta-item">${dot} ${lang}</span>` : ''}
     </div>
-  </div></div>`;
+  </div>`;
 }
 
 async function initProjects() {
-    const track = document.getElementById('project-grid');
-    track.innerHTML = REPOS.map(() =>
-        `<div class="carousel-slide"><div class="card"><p class="loading">fetching...</p></div></div>`
+    const grid = document.getElementById('project-grid');
+    grid.innerHTML = REPOS.map(() =>
+        `<div class="card"><p class="loading">fetching...</p></div>`
     ).join('');
     const data = await Promise.all(REPOS.map(p => fetchRepo(p.repo)));
-    track.innerHTML = REPOS.map((p, i) => buildCard(p, data[i])).join('');
-    initCarousel(track);
-}
-
-function initCarousel(track) {
-    const total = REPOS.length;
-
-    // Clone first and last slides to enable seamless infinite looping.
-    // Track layout: [last_clone, slide_0, slide_1, …, slide_N, first_clone]
-    // Virtual indices:    0          1       2    …    N        N+1
-    track.appendChild(track.children[0].cloneNode(true));
-    track.insertBefore(track.children[track.children.length - 2].cloneNode(true), track.children[0]);
-
-    let vCur = 1; // virtual index into the cloned track
-    let cur  = 0; // logical index (what the dots reflect)
-
-    const dotsEl  = document.getElementById('carousel-dots');
-    const prevBtn = document.getElementById('carousel-prev');
-    const nextBtn = document.getElementById('carousel-next');
-
-    prevBtn.disabled = false;
-    nextBtn.disabled = false;
-
-    dotsEl.innerHTML = Array.from({ length: total }, (_, i) =>
-        `<button class="carousel-dot" aria-label="Go to project ${i + 1}"></button>`
-    ).join('');
-    const dots = [...dotsEl.querySelectorAll('.carousel-dot')];
-
-    function getTranslate(vIdx) {
-        const containerWidth = track.parentElement.offsetWidth;
-        const slideWidth     = track.children[0].offsetWidth;
-        const gap = parseFloat(getComputedStyle(track).columnGap) || 24;
-        const offset = (containerWidth - slideWidth) / 2; // centres the active slide
-        return offset - vIdx * (slideWidth + gap);
-    }
-
-    function updateDots() {
-        dots.forEach((d, i) => d.classList.toggle('active', i === cur));
-    }
-
-    // Instant jump (no animation) — used for the clone→real teleport
-    function jumpTo(vIdx) {
-        track.classList.add('no-transition');
-        track.style.transform = `translateX(${getTranslate(vIdx)}px)`;
-        track.getBoundingClientRect(); // force reflow so the class takes effect
-        track.classList.remove('no-transition');
-        vCur = vIdx;
-    }
-
-    // Animated slide
-    function slideTo(vIdx) {
-        track.style.transform = `translateX(${getTranslate(vIdx)}px)`;
-        vCur = vIdx;
-    }
-
-    function next() {
-        const newV = vCur + 1;
-        cur = newV > total ? 0 : cur + 1;
-        slideTo(newV);
-        updateDots();
-    }
-
-    function prev() {
-        const newV = vCur - 1;
-        cur = newV < 1 ? total - 1 : cur - 1;
-        slideTo(newV);
-        updateDots();
-    }
-
-    // After animating into a clone, silently teleport to the real counterpart
-    track.addEventListener('transitionend', () => {
-        if (vCur === 0)         jumpTo(total);
-        else if (vCur === total + 1) jumpTo(1);
-    });
-
-    prevBtn.addEventListener('click', prev);
-    nextBtn.addEventListener('click', next);
-    dots.forEach((d, i) => d.addEventListener('click', () => {
-        cur = i; vCur = i + 1;
-        slideTo(vCur);
-        updateDots();
-    }));
-
-    document.addEventListener('keydown', e => {
-        if (e.key === 'ArrowLeft')  prev();
-        if (e.key === 'ArrowRight') next();
-    });
-
-    let touchStartX = null;
-    track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
-    track.addEventListener('touchend', e => {
-        if (touchStartX === null) return;
-        const dx = e.changedTouches[0].clientX - touchStartX;
-        if (Math.abs(dx) > 40) dx < 0 ? next() : prev();
-        touchStartX = null;
-    }, { passive: true });
-
-    window.addEventListener('resize', () => jumpTo(vCur));
-
-    jumpTo(1); // initial position — no animation, correct centering
-    updateDots();
+    grid.innerHTML = REPOS.map((p, i) => buildCard(p, data[i])).join('');
 }
 
 // ── contact form ──────────────────────────────────────────────────────────────

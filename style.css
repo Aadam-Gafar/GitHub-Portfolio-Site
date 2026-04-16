@@ -66,35 +66,17 @@ section { padding:2rem 0; border-top:1px solid var(--bd); animation:fadeUp .6s e
 .section-label         { font-size:11px; letter-spacing:.12em; color:var(--ac); text-transform:uppercase; margin-bottom:2.5rem }
 .section-label::before { content:'// '; opacity:.5 }
 
-/* ── carousel ── */
-.carousel { position:relative; overflow:hidden }
-.carousel-track { display:flex; gap:1.5rem; transition:transform .35s cubic-bezier(.4,0,.2,1); will-change:transform }
-.carousel-track.no-transition { transition:none }
-.carousel-slide { flex:0 0 calc(100% - 6rem); min-width:0 }
-.carousel-slide .card { margin:0 }
-
-.carousel-controls { display:flex; align-items:center; justify-content:center; gap:1rem; margin-top:1.25rem }
-
-.carousel-btn {
-  background:none; border:1px solid var(--bd); border-radius:4px;
-  color:var(--text); font-family:var(--mono); font-size:13px;
-  padding:.3rem .8rem; cursor:pointer; line-height:1;
-  transition:border-color .2s, color .2s;
+/* ── projects ── */
+.project-grid {
+  display:grid;
+  grid-template-columns:1fr;
+  gap:1.5rem;
 }
-.carousel-btn:hover:not(:disabled) { border-color:var(--ac); color:var(--ac) }
-.carousel-btn:disabled { opacity:.25; cursor:default }
-
-.carousel-dots { display:flex; gap:.5rem; align-items:center }
-.carousel-dot {
-  width:6px; height:6px; border-radius:50%;
-  background:var(--bd); border:none; cursor:pointer; padding:0;
-  transition:background .2s, transform .2s;
-}
-.carousel-dot.active { background:var(--ac); transform:scale(1.35) }
 
 .card {
   background:var(--bg2); border:1px solid var(--bd); border-radius:4px;
   padding:1.75rem; display:flex; flex-direction:column;
+  width:100%; min-width:0;
   position:relative; overflow:hidden; transition:border-color .2s,transform .2s;
 }
 .card::before {
@@ -217,6 +199,7 @@ body.light #theme-toggle img {
   .header-links { align-items:flex-start }
   h1 { font-size:1.8rem }
   nav { gap:1.25rem }
+  .card { padding:1.5rem }
   .field-row { grid-template-columns:1fr }
   #theme-toggle { bottom:1.25rem; right:1.25rem; }
 }
