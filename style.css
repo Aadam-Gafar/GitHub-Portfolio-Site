@@ -40,8 +40,9 @@ body {
   --ascii-cell: clamp(5px, .72vw, 8px);
   --ascii-row: calc(var(--ascii-cell) * 1.05);
   position:fixed;
-  left:50%;
-  top:50%;
+  left:50vw;
+  top:50vh;
+  top:50svh;
   z-index:0;
   width:100ch;
   margin:0;
