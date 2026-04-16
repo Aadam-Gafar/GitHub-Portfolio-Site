@@ -62,6 +62,13 @@ let githubReposRequest;
 // ── helpers ───────────────────────────────────────────────────────────────────
 
 const fmt = n => n >= 1000 ? (n / 1000).toFixed(1) + 'k' : String(n);
+const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+}[char]));
 const link = (cls, href, text) => href
     ? `<a class="${cls}" href="${href}" target="_blank" rel="noopener">${text}</a>`
     : `<span class="${cls}">${text}</span>`;
@@ -164,6 +171,15 @@ async function initMatrixPortrait() {
 function initMatrixGlitch(portrait, getArt) {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+    const renderGlitchFrame = (source, picked) => {
+        portrait.innerHTML = source.map((char, index) => {
+            if (!picked.has(index)) return escapeHtml(char);
+
+            const symbol = MATRIX_GLITCH_SYMBOLS[Math.floor(Math.random() * MATRIX_GLITCH_SYMBOLS.length)];
+            return `<span class="matrix-glitch">${escapeHtml(symbol)}</span>`;
+        }).join('');
+    };
+
     const glitch = () => {
         const source = [...getArt()];
         const glitchable = [];
@@ -174,7 +190,6 @@ function initMatrixGlitch(portrait, getArt) {
 
         if (!glitchable.length) return;
 
-        const frame = [...source];
         const picked = new Set();
         const count = Math.min(MATRIX_GLITCH_COUNT, glitchable.length);
 
@@ -182,11 +197,7 @@ function initMatrixGlitch(portrait, getArt) {
             picked.add(glitchable[Math.floor(Math.random() * glitchable.length)]);
         }
 
-        picked.forEach(index => {
-            frame[index] = MATRIX_GLITCH_SYMBOLS[Math.floor(Math.random() * MATRIX_GLITCH_SYMBOLS.length)];
-        });
-
-        portrait.textContent = frame.join('');
+        renderGlitchFrame(source, picked);
 
         window.setTimeout(() => {
             portrait.textContent = getArt();
