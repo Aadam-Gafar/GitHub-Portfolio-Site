@@ -52,6 +52,10 @@ body {
   transition:opacity .3s;
 }
 
+body.light #matrix-portrait {
+  text-shadow: 0.5px 0 0 currentColor;
+}
+
 /* scanlines */
 body::before {
   content:''; position:fixed; inset:0; pointer-events:none; z-index:100;
