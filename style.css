@@ -2,7 +2,7 @@
 
 :root {
   --bg:     #0e0e0e;
-  --bg2:    #141414;
+  --bg2:    rgba(20, 20, 20, .75);
   --bd:     #2a2a2a;
   --text:   #c8c8c8;
   --ac:     #b8ff65;
@@ -12,8 +12,8 @@
 
 /* ── light mode ── */
 body.light {
-  --bg:     #f4f4f0;
-  --bg2:    #ebebе6;
+  --bg:     #e2e2e2;
+  --bg2:    rgba(235, 235, 230, .50);
   --bd:     #d0d0c8;
   --text:   #2a2a2a;
   --ac:     #3a7a00;
