@@ -223,6 +223,7 @@ body.light #theme-toggle img {
 }
 
 @media (max-width:600px) {
+  .wrap { width:100%; padding-inline:1.25rem }
   .prompt { flex-direction:column; align-items:flex-start; gap:.75rem }
   .prompt span { display:block }
   .header-bottom { flex-direction:column }
@@ -230,6 +231,8 @@ body.light #theme-toggle img {
   h1 { font-size:1.8rem }
   nav { gap:1.25rem }
   .card { padding:1.5rem }
+  .card-meta { flex-wrap:wrap; gap:.75rem 1rem }
+  .timeline-meta { white-space:normal }
   .field-row { grid-template-columns:1fr }
   #theme-toggle { bottom:1.25rem; right:1.25rem; }
 }
