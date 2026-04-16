@@ -6,17 +6,25 @@
   --bd:     #2a2a2a;
   --text:   #c8c8c8;
   --ac:     #b8ff65;
+  --hover-bd:#3a3a3a;
+  --surface-shadow:none;
   --mono:   'IBM Plex Mono', monospace;
   --sans:   'IBM Plex Sans', sans-serif;
 }
 
 /* ── light mode ── */
 body.light {
-  --bg:     #e2e2e2;
-  --bg2:    rgba(235, 235, 230, .50);
-  --bd:     #d0d0c8;
-  --text:   #2a2a2a;
-  --ac:     #3a7a00;
+  --bg:     #f1e5cb;
+  --bg2:    rgba(255, 246, 219, .84);
+  --bd:     rgba(124, 78, 24, .32);
+  --text:   #322214;
+  --ac:     #a45700;
+  --hover-bd:rgba(164, 87, 0, .68);
+  --surface-shadow:0 14px 34px rgba(86, 48, 11, .08);
+  background:
+    radial-gradient(circle at 72% 10%, rgba(255, 180, 65, .18), transparent 34rem),
+    radial-gradient(circle at 16% 28%, rgba(98, 52, 6, .08), transparent 28rem),
+    var(--bg);
 }
 
 html { scroll-behavior:smooth }
@@ -53,7 +61,8 @@ body {
 }
 
 body.light #matrix-portrait {
-  text-shadow: 0.5px 0 0 currentColor;
+  opacity:.35;
+  text-shadow:0 0 6px rgba(164, 87, 0, .28), 0 0 18px rgba(164, 87, 0, .16);
 }
 
 /* scanlines */
@@ -62,10 +71,16 @@ body::before {
   background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);
 }
 
+body.light::before {
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(96, 54, 8, .035) 2px, rgba(96, 54, 8, .035) 4px),
+    linear-gradient(90deg, rgba(255, 244, 206, .22), transparent 18%, transparent 82%, rgba(82, 45, 6, .06));
+}
+
 /* ── shared ── */
 .wrap    { max-width:860px; margin:0 auto; padding:0 2rem; position:relative; z-index:1 }
 .prose   { font-family:var(--sans); font-weight:300; font-size:13px; color:var(--text); line-height:1.65 }
-.panel   { background:var(--bg2); border:1px solid var(--bd); border-radius:4px; padding:1.25rem 1.5rem }
+.panel   { background:var(--bg2); border:1px solid var(--bd); border-radius:4px; padding:1.25rem 1.5rem; box-shadow:var(--surface-shadow) }
 a               { color: var(--text); text-decoration: none; }
 a:visited       { color: var(--text); }
 a:hover         { color: var(--ac); }
@@ -105,13 +120,14 @@ section { padding:2rem 0; border-top:1px solid var(--bd); animation:fadeUp .6s e
   background:var(--bg2); border:1px solid var(--bd); border-radius:4px;
   padding:1.75rem; display:flex; flex-direction:column;
   width:100%; min-width:0;
-  position:relative; overflow:hidden; transition:border-color .2s,transform .2s;
+  position:relative; overflow:hidden; transition:border-color .2s,transform .2s,box-shadow .2s;
+  box-shadow:var(--surface-shadow);
 }
 .card::before {
   content:''; position:absolute; top:0; left:0; right:0;
   height:2px; background:var(--ac); opacity:0; transition:opacity .2s;
 }
-.card:hover              { border-color:#3a3a3a; transform:translateY(-2px) }
+.card:hover              { border-color:var(--hover-bd); transform:translateY(-2px) }
 .card:hover::before      { opacity:1 }
 .card-header             { display:flex; flex-direction:column; gap:.4rem; margin-bottom:.75rem }
 .card-title              { font-size:15px; font-weight:500; color:var(--text); text-decoration:none; transition:color .2s }
@@ -159,7 +175,8 @@ section { padding:2rem 0; border-top:1px solid var(--bd); animation:fadeUp .6s e
 .field-group textarea {
   background:var(--bg2); border:1px solid var(--bd); border-radius:4px;
   color:var(--text); font-family:var(--mono); font-size:13px;
-  padding:.6rem .8rem; outline:none; transition:border-color .2s;
+  padding:.6rem .8rem; outline:none; transition:border-color .2s,box-shadow .2s;
+  box-shadow:var(--surface-shadow);
 }
 .field-group textarea              { resize:vertical; line-height:1.6 }
 .field-group input::placeholder,
@@ -193,6 +210,7 @@ footer {
   border-radius: 4px;
   border: 1px solid var(--bd);
   background: var(--bg2);
+  box-shadow: var(--surface-shadow);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -213,8 +231,8 @@ footer {
 }
 
 body.light #theme-toggle img {
-  filter: brightness(0) saturate(100%) invert(32%) sepia(60%) saturate(600%) hue-rotate(70deg) brightness(90%);
-  opacity: 0.4;
+  filter: brightness(0) saturate(100%) invert(34%) sepia(88%) saturate(1190%) hue-rotate(13deg) brightness(94%);
+  opacity: 0.52;
 }
 
 @keyframes fadeUp {
