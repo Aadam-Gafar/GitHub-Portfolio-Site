@@ -31,11 +31,24 @@ const MATRIX_GLITCH_SYMBOLS = '@#%&$WM8B';
 const MATRIX_GLITCH_COUNT = 10;
 const MATRIX_GLITCH_LENGTH = 500;
 const MATRIX_GLITCH_INTERVAL = 100;
+const MATRIX_ART_FILES = {
+    dark: 'face-dark.txt',
+    light: 'face-light.txt',
+};
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
 const fmt = n => n >= 1000 ? (n / 1000).toFixed(1) + 'k' : String(n);
 const link = (cls, href, text) => `<a class="${cls}" href="${href}" target="_blank" rel="noopener">${text}</a>`;
+
+function isLightTheme() {
+    return document.body.classList.contains('light');
+}
+
+async function fetchMatrixArt(file) {
+    const r = await fetch(file, { cache: 'force-cache' });
+    return r.ok ? (await r.text()).replace(/\r\n?/g, '\n') : '';
+}
 
 async function fetchRepo(path) {
     try {
@@ -49,29 +62,40 @@ async function initMatrixPortrait() {
     if (!portrait) return;
 
     try {
-        const r = await fetch('face.txt', { cache: 'force-cache' });
-        if (!r.ok) return;
-        const art = (await r.text()).replace(/\r\n?/g, '\n');
-        portrait.textContent = art;
-        initMatrixGlitch(portrait, art);
+        const [darkArt, lightArt] = await Promise.all([
+            fetchMatrixArt(MATRIX_ART_FILES.dark),
+            fetchMatrixArt(MATRIX_ART_FILES.light),
+        ]);
+        if (!darkArt && !lightArt) return;
+
+        const art = {
+            dark: darkArt || lightArt,
+            light: lightArt || darkArt,
+        };
+        const getArt = () => isLightTheme() ? art.light : art.dark;
+        const render = () => { portrait.textContent = getArt(); };
+
+        render();
+        window.addEventListener('themechange', render);
+        initMatrixGlitch(portrait, getArt);
     } catch {
         portrait.remove();
     }
 }
 
-function initMatrixGlitch(portrait, art) {
+function initMatrixGlitch(portrait, getArt) {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    const source = [...art];
-    const glitchable = [];
-
-    source.forEach((char, index) => {
-        if (/\S/.test(char)) glitchable.push(index);
-    });
-
-    if (!glitchable.length) return;
-
     const glitch = () => {
+        const source = [...getArt()];
+        const glitchable = [];
+
+        source.forEach((char, index) => {
+            if (/\S/.test(char)) glitchable.push(index);
+        });
+
+        if (!glitchable.length) return;
+
         const frame = [...source];
         const picked = new Set();
         const count = Math.min(MATRIX_GLITCH_COUNT, glitchable.length);
@@ -87,7 +111,7 @@ function initMatrixGlitch(portrait, art) {
         portrait.textContent = frame.join('');
 
         window.setTimeout(() => {
-            portrait.textContent = art;
+            portrait.textContent = getArt();
             window.setTimeout(glitch, MATRIX_GLITCH_INTERVAL);
         }, MATRIX_GLITCH_LENGTH);
     };
@@ -152,12 +176,13 @@ function initTheme() {
     btn.addEventListener('click', () => {
         const isLight = document.body.classList.toggle('light');
         localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        window.dispatchEvent(new Event('themechange'));
     });
 }
 
 // ── init ──────────────────────────────────────────────────────────────────────
 
+initTheme();
 initMatrixPortrait();
 initProjects();
 initContact();
-initTheme();
