@@ -13,24 +13,14 @@ const REPOS = [
         language: 'Jupyter Notebook',
     },
     {
-        repo: 'Aadam-Gafar/Mono-YouTube-Extension',
-        name: 'Mono YouTube Extension',
-        description: `A browser extension that removes YouTube's recommendations, dark patterns, and distracting UI elements. Published on Chrome and Firefox with 1000+ users. Mascot: Mono, a tired little robot who's dedicated to tidying up our YouTube feeds.`,
-        stars: '-',
-        forks: '-',
-        language: 'CSS',
-        links: [
-            { label: 'chrome store ↗', url: 'https://chromewebstore.google.com/detail/focus-for-youtube/nppiofogichmlkadpbpkpojpidedifeh' },
-            { label: 'firefox add-on ↗', url: 'https://addons.mozilla.org/en-US/firefox/addon/mono-extension/' },
-        ],
-    },
-    {
-        repo: 'Aadam-Gafar/Mono-Video-Browser',
-        name: 'Mono Video Browser',
-        description: '[In development] A distraction-free, local video library manager built with Tauri, Rust, and SQLite. Organise, search, and browse your media collection with a virtual folder system. No cloud dependencies, no file alterations.',
+        repo: 'Aadam-Gafar/Mono-Hub',
+        name: 'Mono Hub',
+        description: `The official hub for Mono, a suite of distraction-free tools designed to help users reclaim their time. Includes: 'Mono, a distraction-free video library' and 'Mono, a distraction-free YouTube extension'.`,
         stars: '-',
         forks: '-',
         language: 'JavaScript',
+        links: [
+            { label: 'website ↗', url: 'https://monoapp.uk' }        ]
     },
 ];
 
