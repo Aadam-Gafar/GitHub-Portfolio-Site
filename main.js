@@ -18,7 +18,7 @@ const REPOS = [
         description: `The official hub for Mono, a suite of distraction-free tools designed to help users reclaim their time. Includes: 'Mono, a distraction-free video library' and 'Mono, a distraction-free YouTube extension'.`,
         stars: '-',
         forks: '-',
-        language: 'JavaScript',
+        language: 'CSS',
         links: [
             { label: 'website ↗', url: 'https://monoapp.uk' }        ]
     },
