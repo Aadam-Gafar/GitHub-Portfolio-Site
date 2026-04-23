@@ -15,7 +15,7 @@ const REPOS = [
     {
         repo: 'Aadam-Gafar/Mono-Hub',
         name: 'Mono Hub',
-        description: `The official hub for Mono, a suite of distraction-free tools designed to help users reclaim their time. Includes: 'Mono, a distraction-free video library' and 'Mono, a distraction-free YouTube extension'.`,
+        description: `The official landing page for Mono, a suite of distraction-free tools designed to help users reclaim their time. Includes: 'Mono for Desktop' and 'Mono for YouTube'.`,
         stars: '-',
         forks: '-',
         language: 'CSS',
