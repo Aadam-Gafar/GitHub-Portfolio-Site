@@ -12,10 +12,11 @@ const PROJECTS = [
         ],
     },
     {
-        name: 'Mono for Desktop & YouTube',
-        description: `The official landing page for Mono, a suite of distraction-free tools designed to help users reclaim their time. Includes: 'Mono for Desktop' and 'Mono for YouTube'.`,
+        name: 'Mono: a distraction-free video library',
+        description: `A desktop app for browsing and watching videos on your computer. Turns your folders into a searchable, streaming-style library without any data leaving your machine.`,
         languages: ['HTML', 'CSS', 'JavaScript', 'Rust'],
         links: [
+            { label: 'store ↗', url: 'https://apps.microsoft.com/detail/9N6D00VZBLR2?hl=en-us&gl=GB&ocid=pdpshare' },
             { label: 'website ↗', url: 'https://monoapp.uk' }
         ],
     },
